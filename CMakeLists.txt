@@ -40,6 +40,7 @@ add_library(kvsd_core STATIC
   src/net/event_loop.cpp
   src/resp/parser.cpp
   src/resp/writer.cpp
+  src/db/db.cpp
 )
 target_include_directories(kvsd_core PUBLIC src)
 target_link_libraries(kvsd_core PUBLIC kvsd_warnings)
