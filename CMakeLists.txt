@@ -73,3 +73,18 @@ kvsd_add_test(test_resp)
 kvsd_add_test(test_writer)
 kvsd_add_test(test_db)
 kvsd_add_test(test_cmd)
+
+# The integration test drives the real binary over a real socket, so it is registered
+# against the built executable rather than the library. Python is a test-time tool
+# only -- the server itself still has no dependency beyond libc and the standard library.
+find_package(Python3 COMPONENTS Interpreter)
+if(Python3_Interpreter_FOUND)
+  add_test(NAME integration
+           COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/integration_test.py
+                   $<TARGET_FILE:kvsd>)
+  # It starts and stops a dozen servers and moves 8 MiB values around; the default
+  # 1500 s is plenty, but a hung server should fail the run rather than hang CI.
+  set_tests_properties(integration PROPERTIES TIMEOUT 300)
+else()
+  message(WARNING "python3 not found: the integration test will be skipped")
+endif()
