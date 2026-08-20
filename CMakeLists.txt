@@ -41,6 +41,11 @@ add_library(kvsd_core STATIC
   src/resp/parser.cpp
   src/resp/writer.cpp
   src/db/db.cpp
+  src/cmd/table.cpp
+  src/cmd/connection.cpp
+  src/cmd/string.cpp
+  src/cmd/keyspace.cpp
+  src/cmd/server.cpp
 )
 target_include_directories(kvsd_core PUBLIC src)
 target_link_libraries(kvsd_core PUBLIC kvsd_warnings)
@@ -65,3 +70,4 @@ kvsd_add_test(test_event_loop)
 kvsd_add_test(test_resp)
 kvsd_add_test(test_writer)
 kvsd_add_test(test_db)
+kvsd_add_test(test_cmd)
