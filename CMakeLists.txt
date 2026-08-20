@@ -23,6 +23,7 @@ endif()
 # real implementation instead of a copy compiled with different flags.
 add_library(kvsd_core STATIC
   src/net/buffer.cpp
+  src/net/socket.cpp
 )
 target_include_directories(kvsd_core PUBLIC src)
 target_link_libraries(kvsd_core PUBLIC kvsd_warnings)
