@@ -38,6 +38,8 @@ add_library(kvsd_core STATIC
   src/net/socket.cpp
   ${KVSD_POLLER_SRC}
   src/net/event_loop.cpp
+  src/net/server.cpp
+  src/util/log.cpp
   src/resp/parser.cpp
   src/resp/writer.cpp
   src/db/db.cpp

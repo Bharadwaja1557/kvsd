@@ -79,6 +79,24 @@ int listen_on(const std::string& bind_addr, uint16_t port, int backlog, std::str
   return fd;
 }
 
+uint16_t local_port(int fd) {
+  sockaddr_in addr{};
+  socklen_t len = sizeof(addr);
+  if (::getsockname(fd, reinterpret_cast<sockaddr*>(&addr), &len) != 0) return 0;
+  return ntohs(addr.sin_port);
+}
+
+bool suppress_sigpipe(int fd) {
+#ifdef SO_NOSIGPIPE
+  int on = 1;
+  return ::setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &on, sizeof(on)) == 0;
+#else
+  // Linux: nothing to do here; the send() calls pass MSG_NOSIGNAL instead.
+  (void)fd;
+  return true;
+#endif
+}
+
 std::string peer_name(int fd) {
   sockaddr_in addr{};
   socklen_t len = sizeof(addr);
