@@ -22,7 +22,7 @@ endif()
 # Everything except main.cpp lives in a library so the test binaries can link the
 # real implementation instead of a copy compiled with different flags.
 add_library(kvsd_core STATIC
-  src/net/placeholder.cpp
+  src/net/buffer.cpp
 )
 target_include_directories(kvsd_core PUBLIC src)
 target_link_libraries(kvsd_core PUBLIC kvsd_warnings)
@@ -31,3 +31,14 @@ add_executable(kvsd src/main.cpp)
 target_link_libraries(kvsd PRIVATE kvsd_core)
 
 enable_testing()
+
+# Each test binary is a plain executable that returns non-zero on failure, which is
+# all CTest needs and keeps the no-third-party-dependency rule intact.
+function(kvsd_add_test name)
+  add_executable(${name} tests/${name}.cpp)
+  target_link_libraries(${name} PRIVATE kvsd_core)
+  target_include_directories(${name} PRIVATE tests)
+  add_test(NAME ${name} COMMAND ${name})
+endfunction()
+
+kvsd_add_test(test_buffer)

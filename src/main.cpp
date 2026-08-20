@@ -1,10 +1,6 @@
 #include <cstdio>
 
-namespace kvsd {
-const char* version();
-}
-
 int main() {
-  std::printf("%s\n", kvsd::version());
+  std::printf("kvsd 0.1.0\n");
   return 0;
 }
