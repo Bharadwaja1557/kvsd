@@ -21,9 +21,22 @@ endif()
 
 # Everything except main.cpp lives in a library so the test binaries can link the
 # real implementation instead of a copy compiled with different flags.
+# WHY compile-time backend selection instead of a runtime interface: only one of the
+# two syscall families exists on any given host, so a virtual Poller would add an
+# indirection to buy portability the linker can provide for free.
+if(APPLE OR CMAKE_SYSTEM_NAME MATCHES "BSD|DragonFly")
+  set(KVSD_POLLER_SRC src/net/poller_kqueue.cpp)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  set(KVSD_POLLER_SRC src/net/poller_epoll.cpp)
+else()
+  message(FATAL_ERROR "kvsd supports Linux (epoll) and macOS/BSD (kqueue) only; got ${CMAKE_SYSTEM_NAME}")
+endif()
+message(STATUS "kvsd poller backend: ${KVSD_POLLER_SRC}")
+
 add_library(kvsd_core STATIC
   src/net/buffer.cpp
   src/net/socket.cpp
+  ${KVSD_POLLER_SRC}
 )
 target_include_directories(kvsd_core PUBLIC src)
 target_link_libraries(kvsd_core PUBLIC kvsd_warnings)
@@ -43,3 +56,4 @@ function(kvsd_add_test name)
 endfunction()
 
 kvsd_add_test(test_buffer)
+kvsd_add_test(test_poller)
