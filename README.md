@@ -1,5 +1,7 @@
 # kvsd
 
+[![CI](https://github.com/Bharadwaja1557/kvsd/actions/workflows/ci.yml/badge.svg)](https://github.com/Bharadwaja1557/kvsd/actions/workflows/ci.yml)
+
 A Redis-compatible key-value server in C++17: single-threaded event loop, incremental
 RESP2 parser, no dependencies beyond the standard library and POSIX.
 
