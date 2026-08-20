@@ -39,6 +39,7 @@ add_library(kvsd_core STATIC
   ${KVSD_POLLER_SRC}
   src/net/event_loop.cpp
   src/resp/parser.cpp
+  src/resp/writer.cpp
 )
 target_include_directories(kvsd_core PUBLIC src)
 target_link_libraries(kvsd_core PUBLIC kvsd_warnings)
@@ -61,3 +62,4 @@ kvsd_add_test(test_buffer)
 kvsd_add_test(test_poller)
 kvsd_add_test(test_event_loop)
 kvsd_add_test(test_resp)
+kvsd_add_test(test_writer)
